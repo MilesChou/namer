@@ -3,3 +3,5 @@ go: 1.9
 
 script:
 - go run main.go
+- go run main.go generate
+- go run main.go status
