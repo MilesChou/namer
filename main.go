@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 	"os"
+	"strconv"
+	"github.com/MilesChou/namer/provider"
 	"github.com/urfave/cli"
 )
 
@@ -27,8 +29,19 @@ func commands() []cli.Command {
 				},
 			},
 			Action: func(c *cli.Context) error {
-				fmt.Println("Hello Generate")
-				fmt.Println("Generate " + c.String("num"))
+				num, err := strconv.Atoi(c.String("num"))
+
+				if err != nil {
+					return err
+				}
+
+				fmt.Println("Generate " + strconv.Itoa(num))
+
+				generator := provider.Create()
+
+				for i := 0; i < num; i++ {
+					fmt.Println(generator.Name())
+				}
 
 				return nil
 			},
