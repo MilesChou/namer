@@ -2,6 +2,12 @@
 
 
 [[projects]]
+  branch = "master"
+  name = "github.com/franela/goreq"
+  packages = ["."]
+  revision = "bcd34c9993f899273c74baaa95e15386cd97b6e7"
+
+[[projects]]
   name = "github.com/urfave/cli"
   packages = ["."]
   revision = "cfb38830724cc34fedffe9a2a29fb54fa9169cd1"
@@ -16,6 +22,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "26340dcb90d4623aa3a0b50e27a92a91a945c09de7d45fa5749dda7cc487aed1"
+  inputs-digest = "67b6e5e21e07ab3af925668db3ccbcd15b6607aa33662b548ef1c9759a40d4b4"
   solver-name = "gps-cdcl"
   solver-version = 1

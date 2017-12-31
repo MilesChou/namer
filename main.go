@@ -21,6 +21,7 @@ func main() {
 	app.Commands = []cli.Command{
 		command.GenerateCommand,
 		command.StatusCommand,
+		command.QueryCommand,
 	}
 
 	app.Run(os.Args)
