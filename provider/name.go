@@ -7,12 +7,26 @@ import (
 
 type Generator struct {
 	rand *rand.Rand
+	Resource NamesResource
 }
 
 func (generator *Generator) Name() string {
-	length := len(names)
+	return generator.LastName() + generator.FirstName()
+}
 
-	return names[generator.rand.Intn(length)]
+func (generator *Generator) LastName() string {
+	length := len(generator.Resource.LastNames)
+	randomIndex := generator.rand.Intn(length)
+
+	return generator.Resource.LastNames[randomIndex]
+}
+
+func (generator *Generator) FirstName() string {
+	merge := append(generator.Resource.CharacterMale, generator.Resource.CharacterFemale...)
+	length := len(merge)
+	randomIndex := generator.rand.Intn(length)
+
+	return merge[randomIndex]
 }
 
 func Create() Generator {
