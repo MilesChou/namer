@@ -33,7 +33,10 @@ func generate(c *cli.Context) error {
 
 	fmt.Println("Generate " + strconv.Itoa(num))
 
+	res, _ := provider.ParseFile(c.GlobalString("provider"))
+
 	generator := provider.Create()
+	generator.Resource = res
 
 	for i := 0; i < num; i++ {
 		fmt.Println(generator.Name())

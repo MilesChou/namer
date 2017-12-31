@@ -3,29 +3,17 @@ package command
 import (
 	"fmt"
 	"github.com/urfave/cli"
-	"io/ioutil"
-	"os"
+	"github.com/MilesChou/namer/provider"
 )
 
 var (
 	StatusCommand = cli.Command{
 		Name:  "status",
 		Usage: "狀態",
-		Flags: []cli.Flag{
-			cli.StringFlag{
-				Name:  "provider",
-				Value: "names.yml",
-				Usage: "名字倉庫",
-			},
-		},
 		Action: func(c *cli.Context) error {
-			os.Chdir(".")
+			t, _ := provider.ParseFile(c.GlobalString("provider"))
 
-			r, _ := ioutil.ReadFile(c.String("provider"))
-
-			fmt.Println(`------ File Content Start ------`)
-			fmt.Printf("%s", r)
-			fmt.Println(`------- File Content End -------`)
+			fmt.Println(t)
 
 			return nil
 		},
