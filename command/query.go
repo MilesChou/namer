@@ -19,14 +19,18 @@ var (
 func query(c *cli.Context) error {
 	str := c.Args().First()
 
-	query, err := provider.Query(str)
+	dict, err := provider.Query(str)
 
 	if err != nil {
 		fmt.Println(err)
 		return err
 	}
 
-	fmt.Println(query)
+	for _, heteronym := range dict.Heteronyms {
+		for _, definition := range heteronym.Definitions {
+			fmt.Println(definition)
+		}
+	}
 
 	return nil
 }
