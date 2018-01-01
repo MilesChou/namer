@@ -31,4 +31,5 @@ Desktop.ini
 /*.log
 
 # Build files
+/bin
 /namer

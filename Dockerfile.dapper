@@ -1,0 +1,8 @@
+FROM golang:1.9-alpine
+
+ENV DAPPER_SOURCE /go/src/github.com/MilesChou/namer
+ENV DAPPER_OUTPUT ./bin
+RUN mkdir -p ${DAPPER_SOURCE}
+WORKDIR ${DAPPER_SOURCE}
+
+CMD ["go", "build", "-o", "./bin/namer", "main.go"]
