@@ -21,7 +21,9 @@ script:
 
 before_deploy:
 - go build
-- mv namer namer-${GIMME_OS}
+- if [[ "$GIMME_OS" == 'linux' ]]; then mv namer namer-${GIMME_OS} ; fi
+- if [[ "$GIMME_OS" == 'darwin' ]]; then mv namer namer-${GIMME_OS} ; fi
+- if [[ "$GIMME_OS" == 'windows' ]]; then mv namer.exe namer-${GIMME_OS}.exe ; fi
 
 deploy:
   provider: releases
