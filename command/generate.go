@@ -3,8 +3,8 @@ package command
 import (
 	"fmt"
 	"strconv"
-	"github.com/MilesChou/namer/provider"
 	"github.com/urfave/cli"
+	"github.com/MilesChou/namer/facade"
 )
 
 var (
@@ -19,28 +19,17 @@ var (
 			},
 		},
 		Action: func(c *cli.Context) error {
-			return generate(c)
+			num, err := strconv.Atoi(c.String("num"))
+
+			if err != nil {
+				return err
+			}
+
+			fmt.Println("Generate " + strconv.Itoa(num))
+
+			return facade.Generate(c.GlobalString("provider"), num, func(item string, index int) {
+				fmt.Println(item)
+			})
 		},
 	}
 )
-
-func generate(c *cli.Context) error {
-	num, err := strconv.Atoi(c.String("num"))
-
-	if err != nil {
-		return err
-	}
-
-	fmt.Println("Generate " + strconv.Itoa(num))
-
-	res, _ := provider.ParseFile(c.GlobalString("provider"))
-
-	generator := provider.Create()
-	generator.Resource = res
-
-	for i := 0; i < num; i++ {
-		fmt.Println(generator.Name())
-	}
-
-	return nil
-}
