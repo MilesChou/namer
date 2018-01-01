@@ -3,7 +3,7 @@ package command
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/urfave/cli"
-	"github.com/MilesChou/namer/provider"
+	"github.com/MilesChou/namer/facade"
 )
 
 var (
@@ -17,21 +17,17 @@ var (
 )
 
 func serve(c *cli.Context) error {
-	res, _ := provider.ParseFile(c.GlobalString("provider"))
-	num := 10
+	num := 10000000
 
 	server := gin.Default()
-	server.GET(`/generate`, func(c *gin.Context) {
-		generator := provider.Create()
-		generator.Resource = res
+	server.GET(`/generate`, func(g *gin.Context) {
+		s := make([]string, num)
 
-		s := []string{}
-		for i := 0; i < num; i++ {
-			s = append(s, generator.Name())
-		}
+		facade.Generate(c.GlobalString("provider"), num, func(item string, index int) {
+			s[index] = item
+		})
 
-		provider.Create()
-		c.JSON(200, s)
+		g.JSON(200, s)
 	})
 
 	server.Run()
