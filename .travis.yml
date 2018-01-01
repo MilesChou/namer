@@ -1,7 +1,33 @@
 language: go
 go: 1.9
 
+branches:
+  only:
+  - master
+  - /^\d+\.\d+\.\d+$/
+
+env:
+- GIMME_OS=linux GIMME_ARCH=amd64
+- GIMME_OS=darwin GIMME_ARCH=amd64
+- GIMME_OS=windows GIMME_ARCH=amd64
+
+install:
+- echo nothing to do ...
+
 script:
-- go run main.go
-- go run main.go generate
-- go run main.go status
+- if [[ "$GIMME_OS" == 'linux' ]]; then go run main.go ; fi
+- if [[ "$GIMME_OS" == 'linux' ]]; then go run main.go generate ; fi
+- if [[ "$GIMME_OS" == 'linux' ]]; then go run main.go status ; fi
+
+before_deploy:
+- go build
+- mv namer namer-${GIMME_OS}
+
+deploy:
+  provider: releases
+  api_key:
+    secure: fsqxCzrPrR+w8eC1PijJ6LyYUMod43sU8d2Dk6rK77w0INkpWdzQcZk1Vc8QwA0EubBMLNKHske4jaemb3fmjmGt3q6mqB9c/hEPEfyIbqXvOs+9E96GvXRVUygUYg+huVIyYsD9cvyT37f1xt4uawx3QTgXuMfQeDcB/YQFyQ3De4CMjCPMy7f/1i1+8nksr9iyD0KDMGpJLdHpE9Iocyye2tC69E2co3V1Ilf00wuoybdmetMqlesLQTD444qqb/CEB0Ys7vkn5QYiCBo/rZHNIyMpH2Gvr/qslridp5sx+/Fn7MGGUNi5FYRobTOFJIpM5mNqcz3RU9nmrHDlX2nxWNCfaw3W4b82qvhad7f+CQgV8dh1ghFjBCghr12GYpA+G2f72HYrEZ+AhKT61ZFRD7FLhONhMC3lPdqgVjDpBY0ChfJZjan5ZAxYTu9hhjovjVv0URW1YtVlbZrVLjkDlNOBdK8g1xjXbU5OWhlp42h4WdfFvsWuRcMbgXZb5mKWCy9xPFBAJra11gyn4h4rmzgzyFxPwm2bJ6lCK9+4bYjzAQkXeQpKJT1HgtyxuXSgCAP97NnfnegU+TZMowcB/b6CZJ9jy6hJPuPFEBXphluHMpGMGoalZ3CGpDDf4/FXXkruNNuYGXRYRlwzSAsB5ByDicnN2LM+ZymctiI=
+  file: namer-${GIMME_OS}
+  skip_cleanup: true
+  on:
+    tags: true
