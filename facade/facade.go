@@ -1,8 +1,12 @@
 package facade
 
-import "github.com/MilesChou/namer/provider"
+import (
+	"github.com/MilesChou/namer/provider"
+)
 
 type GenerateItemProcess func(item string, index int)
+
+type QueryItemProcess func(item string)
 
 func Generate(path string, count int, process GenerateItemProcess) error {
 	res, _ := provider.ParseFile(path)
@@ -12,6 +16,22 @@ func Generate(path string, count int, process GenerateItemProcess) error {
 
 	for i := 0; i < count; i++ {
 		process(generator.Name(), i)
+	}
+
+	return nil
+}
+
+func Query(str string, process QueryItemProcess) error {
+	dict, err := provider.Query(str)
+
+	if err != nil {
+		return err
+	}
+
+	for _, heteronym := range dict.Heteronyms {
+		for _, definition := range heteronym.Definitions {
+			process(definition)
+		}
 	}
 
 	return nil
