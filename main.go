@@ -20,6 +20,7 @@ func main() {
 	}
 	app.Commands = []cli.Command{
 		command.GenerateCommand,
+		command.InitCommand,
 		command.StatusCommand,
 		command.ServeCommand,
 		command.QueryCommand,
