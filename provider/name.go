@@ -13,13 +13,25 @@ type Generator struct {
 }
 
 func (generator *Generator) Name(gender string, firstNameNum int) (name string, err error) {
+	lastName, err := generator.NameFirstNameOnly(gender, firstNameNum)
+
+	if err != nil {
+		return
+	}
+
+	name = generator.LastName() + lastName
+
+	return name, nil
+}
+
+func (generator *Generator) NameFirstNameOnly(gender string, firstNameNum int) (name string, err error) {
 	switch gender {
 	case "":
-		name = generator.LastName() + generator.firstName(firstNameNum)
+		name = generator.firstName(firstNameNum)
 	case "male":
-		name = generator.LastName() + generator.firstNameMale(firstNameNum)
+		name = generator.firstNameMale(firstNameNum)
 	case "female":
-		name = generator.LastName() + generator.firstNameFemale(firstNameNum)
+		name = generator.firstNameFemale(firstNameNum)
 	default:
 		err = errors.New(fmt.Sprintf("gender '%s' is invalid", gender))
 	}
