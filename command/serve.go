@@ -1,6 +1,7 @@
 package command
 
 import (
+	"strconv"
 	"github.com/gin-gonic/gin"
 	"github.com/urfave/cli"
 	"github.com/MilesChou/namer/facade"
@@ -17,12 +18,26 @@ var (
 )
 
 func serve(c *cli.Context) error {
-	num := 10000000
-
 	server := gin.Default()
 	server.GET(`/generate`, func(g *gin.Context) {
-		s := make([]string, num)
+		num, err := strconv.Atoi(g.DefaultQuery("amount", "10"))
 
+		if err != nil {
+			g.JSON(400, err)
+			return
+		}
+
+		firstNameNum, err := strconv.Atoi(g.DefaultQuery("firstNameNum", "0"))
+
+		if err != nil {
+			g.JSON(400, err)
+			return
+		}
+
+		facade.GenerateFirstNameNum = firstNameNum
+		facade.GenerateGender = g.DefaultQuery("gender", "")
+
+		s := make([]string, num)
 		facade.Generate(c.GlobalString("provider"), num, func(item string, index int) {
 			s[index] = item
 		})
