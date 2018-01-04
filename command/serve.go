@@ -27,15 +27,23 @@ func serve(c *cli.Context) error {
 			return
 		}
 
-		firstNameNum, err := strconv.Atoi(g.DefaultQuery("firstNameNum", "0"))
+		firstNameNum, err := strconv.Atoi(g.DefaultQuery("firstNameNum", "2"))
 
 		if err != nil {
 			g.JSON(400, err)
 			return
 		}
 
+		firstNameOnly := g.DefaultQuery("firstNameOnly", "10")
+
 		facade.GenerateFirstNameNum = firstNameNum
 		facade.GenerateGender = g.DefaultQuery("gender", "")
+
+		if firstNameOnly == "1" {
+			facade.GenerateFirstNameOnly = true
+		} else {
+			facade.GenerateFirstNameOnly = false
+		}
 
 		s := make([]string, num)
 		facade.Generate(c.GlobalString("provider"), num, func(item string, index int) {

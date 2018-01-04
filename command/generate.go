@@ -23,8 +23,12 @@ var (
 			},
 			cli.StringFlag{
 				Name:  "first-name-num",
-				Value: "0",
+				Value: "2",
 				Usage: "名的數量， 0 為 1 ~ 2 的亂數，單名給 1 ，雙名給 2",
+			},
+			cli.BoolFlag{
+				Name:  "first-name-only",
+				Usage: "只產生名",
 			},
 		},
 		Action: func(c *cli.Context) error {
@@ -42,6 +46,7 @@ var (
 
 			facade.GenerateFirstNameNum = firstNameNum
 			facade.GenerateGender = c.String("gender")
+			facade.GenerateFirstNameOnly = c.Bool("first-name-only")
 
 			return facade.Generate(c.GlobalString("provider"), num, func(item string, index int) {
 				fmt.Println(item)
